@@ -3,16 +3,27 @@ const Usuarios = require("../models/Usuarios");
 
 exports.crearMateria = async (req, resp)=>{
     try {
-        const admin = req.body.administradores;
-        const nuevaMateria = await Materias.create(req.body)
-                                   
-        resp.status(200).json({
+        const {nombre}=req.body
+        const materiaNombreValidacion = await Materias.findOne({nombre});
+        console.log(materiaNombreValidacion);
+        if (materiaNombreValidacion) {
+          return  resp.status(500).json({
+            ok:false,
+            msg:"Nombre de materia ya registrado"}
+        )
+        }
+        const materia = await Materias.create(req.body);                                   
+        return resp.status(200).json({
             ok:true,
-            msg:"Todos correcto"}
+            msg:"Todos correcto",
+            materia
+        }
         )
     } catch (error) {
-        console.log(`error: ${error}`);
-        
+        resp.status(500).json({
+            ok:true,
+            msg:"Hubo un error inesperado"+error
+        })
     }
 
 }
@@ -45,29 +56,27 @@ exports.eliminarMateria = async (req, resp) => {
 
 
 }
-
-exports.actualizarMateria = async(req,resp=Response)=>{
-    console.log('entro');
+exports.actualizarMateria = async(req, resp)=>{
+    
     const id = req.params.id;
     const materiabd= await Materias.findById(id);
     
     
     try {
         if(!materiabd){
-            console.log('2');
+            
             return resp.status(404).json({
                 ok:true,
                 msg:'No se encontro la materia'
             })
         }
+        
+        const actualizarUsuario = await Materias.findOneAndUpdate(id, req.body.materia);
 
-        if(req.body.administradores){
-            const nuevoAdmin = req.body.administradores;
-            const actualizarAdmins = await Materias.findByIdAndUpdate({_id:id}, {$push:{"administradores":nuevoAdmin}}, {new:true})
-            console.log(nuevoAdmin);
-        }
+        console.log(actualizarUsuario);
 
-
+        actualizarUsuario.save();
+        
 
 
         return resp.status(200).json({
@@ -83,13 +92,71 @@ exports.actualizarMateria = async(req,resp=Response)=>{
     }
 }
 
+exports.actualizarAdministradorMateria = async(req,resp=Response)=>{
+    const {id} = req.params
+    const materiabd= await Materias.findById(id);
+    
+    
+    try {
+        if(!materiabd){
+            
+            return resp.status(404).json({
+                ok:true,
+                msg:'No se encontro la materia'
+            })
+        }
+        //Agregar Instructor
+        if(req.body.administradores){
+            console.log('admin agregar');
+            const nuevoAdmin = req.body.administradores;
+            const actualizarAdmins = await Materias.findByIdAndUpdate({_id:id}, {$push:{"administradores":nuevoAdmin}}, {new:true})
+            
+        }
+
+        return resp.status(200).json({
+            ok:true,
+            msg:'Actualizado',
+
+        })        
+    } catch (error) {
+        resp.status(404).json({
+            ok:false,
+            msg:'Hubo un error inesperado'+error
+        })
+    }
+}
+
+exports.eliminarInstructor=async(req,resp)=>{
+    const {idMateria, idUsuario}=req.params
+    try {
+        const materiaDb = await Materias.findById(idMateria);
+        if(!materiaDb){
+            return resp.status(404).json({
+                ok:true,
+                msg:'No se encontro la materia'
+            })
+        }
+        const eliminarAdmin = await Materias.findByIdAndUpdate({_id:idMateria}, {$pullAll:{administradores:[{_id:idUsuario}]}})
+
+        return resp.status(200).json({
+            ok:true,
+            msg:'Actualizado',
+
+        })  
+    } catch (error) {
+        return resp.status(404).json({
+            ok:true,
+            msg:'Hubo un error inesperado'+error
+        })
+    }
+}
+
 exports.getMaterias = async(req, resp=Response)=>{
 
     try {
         const getMaterias = await Materias.find()
                                   .populate('administradores', 'nombre apellido1 apellido2')
-                                  
-        console.log(getMaterias);
+                    
         
         return resp.status(200).json({
             ok:true,
@@ -106,10 +173,12 @@ exports.getMaterias = async(req, resp=Response)=>{
 
 }
 
+
 exports.getMateria=async(req, resp)=>{
     const id = req.params.id
     
     const materia = await Materias.findById(id)
+                                  .populate('administradores', 'nombre apellido1 apellido2 img email')
     try {
         if(!materia){
             return resp.status(404).json({
@@ -157,6 +226,41 @@ try {
         msg:`Hubo un error inesperado: ${error}`
     })
 }
+
+
+
+
+}
+
+
+exports.eliminarInscrito =async()=>{
+
+    const{idMateria, idAlumno}=req.params;
+
+    try {
+        
+        const alumnoDB = await Usuarios.findById(idAlumno);
+        const materiaDB = await Materias.findById(idMateria);
+        if(!alumnoDB){
+            resp.status(404).json({
+                ok:false,
+                msg:'Ha ocurrido un error inesperado'
+            })
+        }
+
+        const EliminarUsuarioInscrito = await Materias.findByIdAndUpdate({_id:idMateria}, {$pullAll:{administradores:[{_id:idUsuario}]}})
+
+
+    } catch (error) {
+        
+    }
+
+}
+
+
+exports.agregarAsistencia = (req, resp)=>{
+
+    const {idAlumno, idMateria} = req.params
 
 
 

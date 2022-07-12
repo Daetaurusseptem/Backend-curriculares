@@ -49,7 +49,7 @@ exports.createUser = async (req, resp = Response) => {
 
 
 
-exports.getUsuario = async (req, resp) => {
+exports.getUsuarios = async (req, resp) => {
 
     try {
         const usuariosbd = await Usuarios.find();

@@ -23,12 +23,54 @@ const materiasSchema = Schema({
         horas:Number
         },
     //Los horarios de la materia
-    horarios:[
-        {   
-            empieza:{type:Date},
-            termina:{type:Date}
-        }
-    ],
+    horarios:{
+        lunes:{
+            activo:{
+                type:Boolean
+            },
+            horarios:{
+                empieza:{type:Date},
+                termina:{type:Date}
+            }
+            },
+        martes:{
+            activo:{
+                type:Boolean
+            },
+            horarios:{
+                empieza:{type:Date},
+                termina:{type:Date}
+            }
+            },
+        miercoles:{
+            activo:{
+                type:Boolean
+            },
+            horarios:{
+                empieza:{type:Date},
+                termina:{type:Date}
+            }
+            },
+        jueves:{
+            activo:{
+                type:Boolean
+            },
+            horarios:{
+                empieza:{type:Date},
+                termina:{type:Date}
+            }
+            },
+        viernes:{
+            activo:{
+                type:Boolean
+            },
+            horarios:{
+                empieza:{type:Date},
+                termina:{type:Date}
+            }
+            }
+
+        },
     inscritos:[
         {
             type: Schema.Types.ObjectId,

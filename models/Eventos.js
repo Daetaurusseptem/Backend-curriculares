@@ -2,6 +2,9 @@
 const {model, Schema} = require('mongoose');
     //Los eventos son parecidos a las materias pero quien los puede establecer son maestros o administradores
 const materiasSchema = Schema({
+    img:{
+        type:String
+    },
     nombre:{
         type: String,
         required:true,
@@ -16,26 +19,21 @@ const materiasSchema = Schema({
         required:true,
          ref: 'Usuarios'
         },
-    servicioSocial:{
-        terminado:Boolean,
-        horas:Number
-        },
     //Los horarios de la materia
     horario:
         {   
-            empieza:{type:Date},
-            termina:{type:Date}
+           
+            empieza:{type:Date, required:true},
+            termina:{type:Date, required:true}
         },
     asistira:[
         {
             type: Schema.Types.ObjectId,
-            ref:'Usuarios',
-            nombre:'String',
-            matricula:'String'
+            ref:'Usuarios'
         }
     ]
 
 })
 
 
-module.exports = model('Materias', materiasSchema);
+module.exports = model('Eventos', materiasSchema);

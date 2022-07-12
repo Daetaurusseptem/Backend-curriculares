@@ -20,11 +20,13 @@ app.use(cors());
 app.use(expressFileUpload());
 
 //rutas
-app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/usuarios', require('./routes/Usuarios'));
 app.use('/api/alumnos', require('./routes/Alumnos'));
-app.use('/api/materias', require('./routes/materias'));
+app.use('/api/materias', require('./routes/Materias'));
 app.use('/api/maestros', require('./routes/Maestros'));
 app.use('/api/auth', require('./routes/Auth'));
+app.use('/api/uploads', require('./routes/Uploads'));
+app.use('/api/eventos', require('./routes/Eventos'));
 
 
 //public directory
