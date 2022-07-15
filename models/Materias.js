@@ -1,85 +1,46 @@
 
-const {model, Schema} = require('mongoose');
+const { model, Schema } = require('mongoose');
 
 const materiasSchema = Schema({
-    nombre:{
+    nombre: {
         type: String,
-        required:true,
+        required: true,
     },
-    descripcion:{
+    descripcion: {
         type: String,
-        required:true,
+        required: true,
     },
-    img:{
+    img: {
         type: String
     },
     //Referencia al usuario de tipo maestro que administra la materia
-    administradores:[
-    {type: Schema.Types.ObjectId,required:true, ref: 'Usuarios'}
+    administradores: [
+        { type: Schema.Types.ObjectId, required: true, ref: 'Usuarios' }
     ]
-        ,
-    servicioSocial:{
-        terminado:Boolean,
-        horas:Number
-        },
+    ,
+    servicioSocial: {
+        terminado: Boolean,
+        horas: Number
+    },
     //Los horarios de la materia
-    horarios:{
-        lunes:{
-            activo:{
-                type:Boolean
-            },
-            horarios:{
-                empieza:{type:Date},
-                termina:{type:Date}
-            }
-            },
-        martes:{
-            activo:{
-                type:Boolean
-            },
-            horarios:{
-                empieza:{type:Date},
-                termina:{type:Date}
-            }
-            },
-        miercoles:{
-            activo:{
-                type:Boolean
-            },
-            horarios:{
-                empieza:{type:Date},
-                termina:{type:Date}
-            }
-            },
-        jueves:{
-            activo:{
-                type:Boolean
-            },
-            horarios:{
-                empieza:{type:Date},
-                termina:{type:Date}
-            }
-            },
-        viernes:{
-            activo:{
-                type:Boolean
-            },
-            horarios:{
-                empieza:{type:Date},
-                termina:{type:Date}
-            }
-            }
-
-        },
-    inscritos:[
+    horarios: [
+        {
+            dia:{type:String},
+            empiezaHora: {type:Number},
+            empiezaMinuto: {type:Number},
+            terminaHora: {type:Number},
+            terminaMinuto: {type:Number}
+        }
+    ],
+    inscritos: [
         {
             type: Schema.Types.ObjectId,
-            ref:'Usuarios',
-            asistencias:[
+            ref: 'Usuarios',
+            asistencias: [
                 {
-                    asistencia:{
-                        fecha:{type: Date},
-                        asistencia:{type:Boolean}
+                    asistencia: {
+                        fecha: { type: Date },
+                        asistencia: { type: Boolean }
                     }
                 }
             ]

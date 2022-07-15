@@ -27,6 +27,7 @@ app.use('/api/maestros', require('./routes/Maestros'));
 app.use('/api/auth', require('./routes/Auth'));
 app.use('/api/uploads', require('./routes/Uploads'));
 app.use('/api/eventos', require('./routes/Eventos'));
+app.use('/api/horarios', require('./routes/Horarios'));
 
 
 //public directory

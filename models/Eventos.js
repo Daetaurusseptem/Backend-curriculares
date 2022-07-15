@@ -1,7 +1,7 @@
 
 const {model, Schema} = require('mongoose');
     //Los eventos son parecidos a las materias pero quien los puede establecer son maestros o administradores
-const materiasSchema = Schema({
+const eventosSchema = Schema({
     img:{
         type:String
     },
@@ -36,4 +36,4 @@ const materiasSchema = Schema({
 })
 
 
-module.exports = model('Eventos', materiasSchema);
+module.exports = model('Eventos', eventosSchema);
