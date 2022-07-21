@@ -46,16 +46,17 @@ try {
 
          const materias = await Materias.find({_id:id})
 
-         resp.status(200).json({
+         return resp.status(200).json({
             ok:true,
             materias
          })
 
      } catch (error) {
-        resp.status(200).json({
+        return resp.status(200).json({
             ok:false,
-            msg:'Hubo un error inesperado'
+            msg:'Hubo un error inesperado'+error
          })
 
      }
  }
+

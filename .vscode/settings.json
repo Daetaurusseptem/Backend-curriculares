@@ -1,8 +1,23 @@
 {
+    "window.title": "Bckend Curriculares ⭐",
     "workbench.colorCustomizations": {
-        "activityBar.background": "#00352A",
-        "titleBar.activeBackground": "#004A3B",
-        "titleBar.activeForeground": "#E8FFFA"
+        "activityBar.activeBackground": "#0d7594",
+        "activityBar.activeBorder": "#750a5d",
+        "activityBar.background": "#0d7594",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#750a5d",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "sash.hoverBorder": "#0d7594",
+        "statusBar.background": "#095065",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#0d7594",
+        "statusBarItem.remoteBackground": "#095065",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#095065",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#09506599",
+        "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "window.title": "Bckend Curriculares ⭐"
+    "peacock.color": "095065"
 }
