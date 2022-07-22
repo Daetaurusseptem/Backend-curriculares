@@ -14,11 +14,7 @@ const eventosSchema = Schema({
         required:true,
     },
      //Referencia al usuario de tipo maestro que administra l
-    realizador:{
-        type: Schema.Types.ObjectId,
-        required:true,
-         ref: 'Usuarios'
-        },
+    realizadores:[{type: Schema.Types.ObjectId,ref: 'Usuarios'}],
     //Los horarios de la materia
     horario:
         {   

@@ -2,6 +2,7 @@
 const Usuario = require('../models/Usuarios');
 const fs = require('fs');
 const Materias = require('../models/Materias');
+const Eventos = require('../models/Eventos');
 
 
 const borrarImagen = (path) => {
@@ -48,26 +49,17 @@ exports.actualizarImagen = async (id, tipo, nombrearchivo) => {
             usuario.save()
             return true;
 
-            break;
-        // case 'evento':
-            // const hospital = await Hospital.findById(id);
-
-            // if ( !hospital ) {
-            //     console.log('No se encontro hospital por id');
-            //     return false
-            // }
-
-            // pathViejo = `./uploads/hospitales/${hospital.img}`
-
-            // borrarImagen(pathViejo);
-
-            // hospital.img = nombrearchivo;
-
-            // hospital.save()
-
-            // return true;
-
-            // break;
+            case 'evento':
+            const evento = await Eventos.findById(id);
+            if ( !evento ) {
+                 console.log('No se encontro evento');
+                 return false
+            }
+            pathViejo = `./uploads/eventos/${evento.img}`
+            borrarImagen(pathViejo);
+            evento.img = nombrearchivo;
+            evento.save()
+            return true;
     }
 
 

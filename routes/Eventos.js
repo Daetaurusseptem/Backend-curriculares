@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { crearEvento, getEventos, actualizarEvento, eliminarEvento } = require('../controllers/eventos');
+const { crearEvento, getEventos, actualizarEvento, eliminarEvento, getEvento, eliminarRealizadorEvento, actualizarRealizadorEvento } = require('../controllers/eventos');
 const { createUser, getUsuario, eliminarUsuario, actualizarUsuario, getUsuarios } = require('../controllers/usuarios');
 const { validarJWT } = require('../middleware/validar-jwt');
 
@@ -13,8 +13,8 @@ router.post('/',
     [
         check('nombre', 'Nombre Obligatorio').not().isEmpty(),
         check('descripcion', 'Descripcion Obligatoria').not().isEmpty(),
-        check('realizador', 'Realizador Obligatorio').not().isEmpty(),
-        check('realizador', 'Realizador No valido').isMongoId(),
+        check('realizadores', 'Realizador Obligatorio').not().isEmpty(),
+        check('realizadores', 'Realizador No valido').isMongoId(),
         check('horario.empieza', 'Horario Obligatorio').not().isEmpty(),
         check('horario.termina', 'Horario Obligatorio').not().isEmpty(),
         check('horario.empieza', 'Horario Obligatorio').isISO8601().toDate(),
@@ -28,6 +28,10 @@ router.get('/',
     validarJWT,
     getEventos
 )
+router.get('/:id',
+    validarJWT,
+    getEvento
+)
 
 router.put('/:id',
     validarJWT,
@@ -38,6 +42,15 @@ router.delete('/:id',
     validarJWT,
     eliminarEvento
 )
+
+router.put('/actualizarRealizador/:id', 
+            validarJWT,
+            actualizarRealizadorEvento);
+
+router.delete('/:idEvento/:idUsuario', 
+            validarJWT, 
+            eliminarRealizadorEvento)
+
 
 // nombre
 // descripcion

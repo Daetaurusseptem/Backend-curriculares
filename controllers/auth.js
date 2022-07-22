@@ -1,6 +1,7 @@
 const { generarJWT } = require("../helpers/jwt");
 const Usuarios = require("../models/Usuarios");
 const bcrypt = require('bcrypt');
+const { getMenuFrontEnd } = require("../helpers/menu-frontend");
 
 
 
@@ -38,7 +39,7 @@ exports.login = async  (req, resp=Response)=>{
         return resp.status(200).json({
             ok:true,
             token,
-            // menu:getMenuFrontEnd(usuarioDB.role)
+            menu:getMenuFrontEnd(usuarioDB.role)
         })
 
 
@@ -71,7 +72,7 @@ exports.renewToken = async(req, resp=response)=>{
         token,
         uid,
         usuario,
-        // menu:getMenuFrontEnd(usuario.role)
+        menu:getMenuFrontEnd(usuario.role)
 
     });
 
