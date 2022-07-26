@@ -18,10 +18,6 @@ const materiasSchema = Schema({
         { type: Schema.Types.ObjectId, required: true, ref: 'Usuarios' }
     ]
     ,
-    servicioSocial: {
-        terminado: Boolean,
-        horas: Number
-    },
     //Los horarios de la materia
     horarios: [
         {

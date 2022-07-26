@@ -179,6 +179,7 @@ exports.getMateria=async(req, resp)=>{
     
     const materia = await Materias.findById(id)
                                   .populate('administradores', 'nombre apellido1 apellido2 img email')
+                                  .populate('inscritos')
     try {
         if(!materia){
             return resp.status(404).json({
@@ -233,7 +234,7 @@ try {
 }
 
 
-exports.eliminarInscrito =async()=>{
+exports.eliminarInscrito =async(req, resp)=>{
 
     const{idMateria, idAlumno}=req.params;
 
@@ -242,27 +243,83 @@ exports.eliminarInscrito =async()=>{
         const alumnoDB = await Usuarios.findById(idAlumno);
         const materiaDB = await Materias.findById(idMateria);
         if(!alumnoDB){
-            resp.status(404).json({
+            return resp.status(404).json({
                 ok:false,
-                msg:'Ha ocurrido un error inesperado'
+                msg:'No existe este Usuario'
             })
         }
 
-        const EliminarUsuarioInscrito = await Materias.findByIdAndUpdate({_id:idMateria}, {$pullAll:{administradores:[{_id:idUsuario}]}})
+        const EliminarUsuarioInscrito = await Materias.findByIdAndUpdate({_id:idMateria}, {$pullAll:{inscritos:[{_id:idAlumno}]}})
 
-
+        return resp.status(200).json({
+            ok:true,
+            msg:'Eliminacion Exitosa'
+        })
     } catch (error) {
-        
+        return resp.status(404).json({
+            ok:false,
+            msg:'Ha ocurrido un error inesperado'+error
+        })
     }
 
 }
 
 
-exports.agregarAsistencia = (req, resp)=>{
+exports.agregarAsistencia = async(req, resp)=>{
 
     const {idAlumno, idMateria} = req.params
 
+    const asistencia = req.body
+
+    try {
+        const usuarioDb = await Usuarios.findById(idAlumno);
+        const materiaDb = await Materias.findById(idMateria);
+        if(!usuarioDb){
+            return resp.status(400).json({
+                ok:false,
+                msg:'No existe usuario'
+            })
+        }
+        if(!materiaDb){
+            return resp.status(400).json({
+                ok:false,
+                msg:'No existe materia'
+            })
+        }
+
+        const agregarAsistencia = await Materias.findByIdAndUpdate(idMateria, {$push:{"inscritos":asistencia}}, {new:true} )
 
 
 
+        
+    } catch (error) {
+        
+    }
+
+
+
+
+
+
+}
+
+exports.getMateriasMaestro  = async(req, resp)=>{
+    const {idMaestro } = req.params
+
+    const maestroDB = await Usuarios.findById(idMaestro);
+
+    if(!maestroDB){
+        return resp.status(404).json({
+            ok:false,
+            msg:'No se encontro el maestro'
+        })
+    }
+
+    const materiasMaestro = await Materias.find({administradores:idMaestro})
+
+    return resp.status(200).json({
+        ok:true,
+        materias:materiasMaestro
+    })
+    
 }

@@ -28,6 +28,7 @@ app.use('/api/auth', require('./routes/Auth'));
 app.use('/api/uploads', require('./routes/Uploads'));
 app.use('/api/eventos', require('./routes/Eventos'));
 app.use('/api/horarios', require('./routes/Horarios'));
+app.use('/api/todo', require('./routes/Busqueda'))
 
 
 //public directory

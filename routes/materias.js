@@ -1,5 +1,5 @@
 const {Router} = require('express');
-const { crearMateria, getMaterias, actualizarMateria, addAlumno, eliminarMateria, getMateria, eliminarInstructor, actualizarAdministradorMateria,  } = require('../controllers/materias');
+const { crearMateria, getMaterias, actualizarMateria, addAlumno, eliminarMateria, getMateria, eliminarInstructor, actualizarAdministradorMateria, getMateriasMaestro, getMateriaAlumnos, eliminarInscrito, agregarAsistencia,  } = require('../controllers/materias');
 const { validarJWT } = require('../middleware/validar-jwt');
 
 const {check} = require('express-validator');
@@ -17,7 +17,8 @@ router.post('/',
 
 router.get('/', getMaterias);
 
-router.get('/:id', getMateria);
+router.get('/:id',[validarJWT], getMateria);
+
 
 router.delete('/:id',
             validarJWT,
@@ -34,9 +35,17 @@ router.put('/actualizarAdmin/:id',
 router.delete('/:idMateria/:idUsuario', 
             validarJWT, 
             eliminarInstructor)
+router.delete('/eliminar-inscrito/:idMateria/:idAlumno', 
+            validarJWT, 
+            eliminarInscrito)
 
 router.put('/alumno/:alumnoId/:materiaId', 
             validarJWT,
             addAlumno);
+router.get('/materias-maestro/:idMaestro',
+            validarJWT,
+            getMateriasMaestro)
+
+router.put('/asistencia/:idMateria/:idAlumno', validarJWT, agregarAsistencia)
 
 module.exports= router;

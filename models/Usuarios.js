@@ -32,7 +32,8 @@ const usuarioSchema = Schema({
     },
     //
     matricula:{
-        type:String
+        type:String,
+        unique:true
     },
     materia:{
         type: Schema.Types.ObjectId, ref: 'Materias', default:null
