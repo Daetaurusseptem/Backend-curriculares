@@ -30,16 +30,8 @@ const materiasSchema = Schema({
     ],
     inscritos: [
         {
-            type: Schema.Types.ObjectId,
-            ref: 'Usuarios',
-            asistencias: [
-                {
-                    asistencia: {
-                        fecha: { type: Date },
-                        asistencia: { type: Boolean }
-                    }
-                }
-            ]
+                type: Schema.Types.ObjectId,
+                ref: 'Usuarios'
         }
     ]
 

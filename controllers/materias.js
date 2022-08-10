@@ -1,6 +1,8 @@
 const Materias= require("../models/Materias");
 const Usuarios = require("../models/Usuarios");
 
+const mongoose = require('mongoose');
+
 exports.crearMateria = async (req, resp)=>{
     try {
         const {nombre}=req.body
@@ -215,7 +217,9 @@ try {
         })
     }
     
-    const agregarInscrito = await Materias.findByIdAndUpdate({_id:materiaId}, {$push:{"inscritos":alumnoId}}, {new:true});
+    
+
+    const agregarInscrito = await Materias.findByIdAndUpdate({_id:materiaId}, {$push:{"inscritos":req.body._id}}, {new:true});
     return resp.status(200).json({
         ok:true,
         msg:'Actualizado',
@@ -250,6 +254,7 @@ exports.eliminarInscrito =async(req, resp)=>{
         }
 
         const EliminarUsuarioInscrito = await Materias.findByIdAndUpdate({_id:idMateria}, {$pullAll:{inscritos:[{_id:idAlumno}]}})
+        const EliminarMateriaInscrita = await Usuarios.findByIdAndUpdate({_id:idAlumno}, {$pullAll:{materia:idMateria}})
 
         return resp.status(200).json({
             ok:true,
@@ -265,43 +270,6 @@ exports.eliminarInscrito =async(req, resp)=>{
 }
 
 
-exports.agregarAsistencia = async(req, resp)=>{
-
-    const {idAlumno, idMateria} = req.params
-
-    const asistencia = req.body
-
-    try {
-        const usuarioDb = await Usuarios.findById(idAlumno);
-        const materiaDb = await Materias.findById(idMateria);
-        if(!usuarioDb){
-            return resp.status(400).json({
-                ok:false,
-                msg:'No existe usuario'
-            })
-        }
-        if(!materiaDb){
-            return resp.status(400).json({
-                ok:false,
-                msg:'No existe materia'
-            })
-        }
-
-        const agregarAsistencia = await Materias.findByIdAndUpdate(idMateria, {$push:{"inscritos":asistencia}}, {new:true} )
-
-
-
-        
-    } catch (error) {
-        
-    }
-
-
-
-
-
-
-}
 
 exports.getMateriasMaestro  = async(req, resp)=>{
     const {idMaestro } = req.params

@@ -33,7 +33,11 @@ const usuarioSchema = Schema({
     //
     matricula:{
         type:String,
-        unique:true
+        required:false,
+        index: {
+            unique: true,
+            partialFilterExpression: {matricula: {$type: "string"}}
+        }
     },
     materia:{
         type: Schema.Types.ObjectId, ref: 'Materias', default:null
@@ -54,8 +58,16 @@ const usuarioSchema = Schema({
     google:{
         type:Boolean,
         default:false
-    }
+    },
+    asistencias:[
+        {
+            fecha:{type:Date},
+            asistio:{type:Boolean}
+        }
+    ]
 })
+
+
 
 usuarioSchema.method('toJson', function(){
     const{__v, _id, password, ...object} = this.toObject();

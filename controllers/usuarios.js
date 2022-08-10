@@ -2,6 +2,8 @@ const Usuarios = require("../models/Usuarios")
 
 const bcrypt = require('bcrypt');
 const { generarJWT } = require("../helpers/jwt");
+const Asistencias = require("../models/Asistencias");
+const { default: mongoose } = require("mongoose");
 
 
 exports.createUser = async (req, resp = Response) => {
@@ -21,14 +23,16 @@ exports.createUser = async (req, resp = Response) => {
         }
 
         const usuarioNuevo = new Usuarios(req.body);
-
+        
         //password encrypt
         const salt = bcrypt.genSaltSync();
         usuarioNuevo.password = bcrypt.hashSync(password, salt);
-
+        
         await usuarioNuevo.save();
-
+        
         const id = usuarioNuevo.id;
+        // const asistenciasAlumno = new Asistencias({ alumno:mongoose.Types.ObjectId(id)})
+        // await asistenciasAlumno.save()
         const token = await generarJWT(id)
 
         //Generar middleware de jwt

@@ -64,9 +64,6 @@ exports.renewToken = async(req, resp=response)=>{
     let usuario = await Usuarios.findById(uid);    
 
 
-    
-
-
     return resp.status(200).json({
         ok:true,
         token,
