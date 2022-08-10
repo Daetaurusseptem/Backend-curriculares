@@ -1,4 +1,5 @@
-const Eventos = require("../models/Eventos")
+const Eventos = require("../models/Eventos");
+const Usuarios = require("../models/Usuarios");
 
 exports.getEventos= async(req,resp)=>{
 
@@ -203,4 +204,84 @@ exports.actualizarRealizadorEvento = async(req,resp=Response)=>{
             msg:'Hubo un error inesperado'+error
         })
     }
+}
+
+
+exports.addAsistenciaEvento = async(req, resp)=>{
+
+    const {idAlumno, idEvento} = req.params
+try {
+    
+    const eventoDb = await Eventos.findById(idEvento);
+    const usuarioDb = await Usuarios.findById(idAlumno);
+    
+    if(!eventoDb){
+        return resp.status(404).json({
+            ok: false,
+            msg: "No se encontro el evento"
+        })
+    }
+    if(!usuarioDb){
+        return resp.status(404).json({
+            ok: false,
+            msg: "No se encontro el usuario"
+        })
+    }
+    
+    const agregarAsistencia = await Eventos.findByIdAndUpdate({_id:idEvento}, {$push:{"asistira":idAlumno}}, {new:true});
+    return resp.status(200).json({
+        ok:true,
+        msg:'Usuario Agregado',
+    }) 
+} catch (error) {
+    return resp.status(200).json({
+        ok:false,
+        msg:'Hubo un error',error
+    }) 
+}
+
+
+
+
+}
+
+exports.comprobarAsistenciaEvento=async(req, resp)=>{
+    const {idUsuario, idEvento} = req.params;
+
+    try {
+        const eventoDb = await Eventos.findById(idEvento);
+        const usuarioDb = await Usuarios.findById(idUsuario);
+        
+        if(!eventoDb){
+            return resp.status(404).json({
+                ok: false,
+                msg: "No se encontro el evento"
+            })
+        }
+        if(!usuarioDb){
+            return resp.status(404).json({
+                ok: false,
+                msg: "No se encontro el usuario"
+            })
+        }
+    
+        const comprobarAsistenciaUsuario = await Eventos.find({_id:idEvento, asistira:idUsuario})
+    
+        if(!comprobarAsistenciaUsuario){
+            return resp.status(200).json({
+                asistencia:false
+            })
+        }
+        return resp.status(200).json({
+            asistencia:true
+        })
+        
+    } catch (error) {
+        return resp.status(404).json({
+            ok: false,
+            msg: "Hubo un error Inesperado"
+        })
+    }
+    
+
 }

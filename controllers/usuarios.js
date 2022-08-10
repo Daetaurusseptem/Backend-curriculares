@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const { generarJWT } = require("../helpers/jwt");
 const Asistencias = require("../models/Asistencias");
 const { default: mongoose } = require("mongoose");
+const Materias = require("../models/Materias");
+const { count } = require("../models/Materias");
 
 
 exports.createUser = async (req, resp = Response) => {
@@ -161,4 +163,32 @@ exports.actualizarUsuario = async (req, resp = response) => {
 
 
     }
+}
+
+exports.numeroInscritos=async(req,resp)=>{
+
+    const {idMateria} = req.params
+
+    try {
+        
+        const materiaDB = await Materias.findById(idMateria);
+    
+        if(!materiaDB){
+            return resp.status(404).json({
+                ok: false,
+                msg: "Materia No existe"
+            })
+        }
+    
+        const numeroInscritos = await Materias.findById(idMateria).populate('inscritos');
+    
+        return resp.status(200).json({
+            ok: true,
+            numero:numeroInscritos.inscritos.length
+        })
+    } catch (error) {
+        
+    }
+
+    
 }

@@ -4,6 +4,7 @@ const { validarJWT } = require('../middleware/validar-jwt');
 
 const {check} = require('express-validator');
 const { agregarAsistencia, getAsistenciasAlumno, getAsistenciaDiaMateria } = require('../controllers/asistencias');
+const { numeroInscritos } = require('../controllers/usuarios');
 
 const router = Router();
 
@@ -51,6 +52,8 @@ router.get('/materias-maestro/:idMaestro',
 
 // router.put('/asistencia/:idMateria/:idAlumno',[validarJWT], agregarAsistencia)
 
+
+router.get('/contar/:idMateria',numeroInscritos)
 
 
 module.exports= router;
