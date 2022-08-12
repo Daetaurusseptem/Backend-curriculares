@@ -65,6 +65,7 @@ const usuarioSchema = Schema({
             asistio:{type:Boolean}
         }
     ]
+
 })
 
 

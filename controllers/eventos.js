@@ -245,13 +245,51 @@ try {
 
 }
 
+exports.deleteAsistenciaEvento = async(req, resp)=>{
+console.log('a');
+    const {idAlumno, idEvento} = req.params
+try {
+    
+    const eventoDb = await Eventos.findById(idEvento);
+    const usuarioDb = await Usuarios.findById(idAlumno);
+    
+    if(!eventoDb){
+        return resp.status(404).json({
+            ok: false,
+            msg: "No se encontro el evento"
+        })
+    }
+    if(!usuarioDb){
+        return resp.status(404).json({
+            ok: false,
+            msg: "No se encontro el usuario"
+        })
+    }
+    
+    const agregarAsistencia = await Eventos.findByIdAndUpdate({_id:idEvento}, {$pull:{"asistira":idAlumno}}, {new:true});
+    return resp.status(200).json({
+        ok:true,
+        msg:'Usuario Agregado',
+    }) 
+} catch (error) {
+    return resp.status(200).json({
+        ok:false,
+        msg:'Hubo un error',error
+    }) 
+}
+
+
+
+
+}
+
 exports.comprobarAsistenciaEvento=async(req, resp)=>{
-    const {idUsuario, idEvento} = req.params;
+    const {idAlumno, idEvento} = req.params;
 
     try {
         const eventoDb = await Eventos.findById(idEvento);
-        const usuarioDb = await Usuarios.findById(idUsuario);
-        
+        const usuarioDb = await Usuarios.findById(idAlumno);
+
         if(!eventoDb){
             return resp.status(404).json({
                 ok: false,
@@ -265,9 +303,9 @@ exports.comprobarAsistenciaEvento=async(req, resp)=>{
             })
         }
     
-        const comprobarAsistenciaUsuario = await Eventos.find({_id:idEvento, asistira:idUsuario})
+        const comprobarAsistenciaUsuario = await Eventos.find({_id:idEvento, 'asistira':idAlumno})
     
-        if(!comprobarAsistenciaUsuario){
+        if(comprobarAsistenciaUsuario.length==0){
             return resp.status(200).json({
                 asistencia:false
             })
@@ -279,7 +317,7 @@ exports.comprobarAsistenciaEvento=async(req, resp)=>{
     } catch (error) {
         return resp.status(404).json({
             ok: false,
-            msg: "Hubo un error Inesperado"
+            msg: "Hubo un error Inesperado", error
         })
     }
     

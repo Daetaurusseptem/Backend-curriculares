@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { crearEvento, getEventos, actualizarEvento, eliminarEvento, getEvento, eliminarRealizadorEvento, actualizarRealizadorEvento, addAsistenciaEvento, comprobarAsistencia, comprobarAsistenciaEvento } = require('../controllers/eventos');
+const { crearEvento, getEventos, actualizarEvento, eliminarEvento, getEvento, eliminarRealizadorEvento, actualizarRealizadorEvento, addAsistenciaEvento, comprobarAsistencia, comprobarAsistenciaEvento, deleteAsistenciaEvento } = require('../controllers/eventos');
 const { createUser, getUsuario, eliminarUsuario, actualizarUsuario, getUsuarios } = require('../controllers/usuarios');
 const { validarJWT } = require('../middleware/validar-jwt');
 
@@ -48,17 +48,18 @@ router.put('/actualizarRealizador/:id',
             actualizarRealizadorEvento);
 
 router.get('/agregar-asistencia/:idEvento/:idAlumno', 
-            validarJWT,
-            comprobarAsistenciaEvento);
+validarJWT,
+addAsistenciaEvento);
 
+router.get('/comprobar-asistencia/:idEvento/:idAlumno',validarJWT, comprobarAsistenciaEvento )
 
 router.put('/agregar-asistencia/:idEvento/:idAlumno', 
             validarJWT,
             addAsistenciaEvento);
 
-router.delete('/:idEvento/:idUsuario', 
+router.delete('/eliminar-asistencia-evento/:idEvento/:idAlumno', 
             validarJWT, 
-            eliminarRealizadorEvento)
+            deleteAsistenciaEvento)
 
 
 // nombre
