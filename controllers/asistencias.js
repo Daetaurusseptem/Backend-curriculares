@@ -37,3 +37,21 @@ exports.agregarAsistencia=async(req,resp)=>{
     
 
 }
+
+exports.getAsistencias =async(req, resp)=>{
+
+    const {idAlumno} = req.params
+
+    const alumnoDb = await Usuarios.findById(idAlumno);
+
+    if(!alumnoDb){
+        resp.status(500).json({
+            ok:false,
+            msg:'No se encontro el Alumno'
+        })
+    }
+
+    const asistencias = await Usuarios.find
+
+
+}

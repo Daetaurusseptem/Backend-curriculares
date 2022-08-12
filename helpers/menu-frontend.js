@@ -35,7 +35,8 @@ exports.getMenuFrontEnd =(role='admin')=>{
   if(role==='alumno'){
     menu[0].title='alumno'
     
-    menu[0].submenu.unshift({title: 'alumno', url: 'alumno' });
+    menu[0].submenu.unshift({title: 'extracurricular', url: 'extra'});
+    menu[0].submenu.unshift({title: 'perfil', url: 'perfil-alumno'});
   }
   
   return menu

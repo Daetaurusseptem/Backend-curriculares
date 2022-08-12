@@ -44,7 +44,8 @@ const usuarioSchema = Schema({
     },
     servicioSocial:{
         status:{
-            type:Boolean
+            type:Boolean,
+            default:false
         },
         horas:{
             type:Number
