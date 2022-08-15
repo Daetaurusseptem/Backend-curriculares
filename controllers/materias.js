@@ -220,6 +220,9 @@ try {
     
 
     const agregarInscrito = await Materias.findByIdAndUpdate({_id:materiaId}, {$push:{"inscritos":req.body._id}}, {new:true});
+
+
+
     return resp.status(200).json({
         ok:true,
         msg:'Actualizado',
@@ -253,8 +256,8 @@ exports.eliminarInscrito =async(req, resp)=>{
             })
         }
 
-        const EliminarUsuarioInscrito = await Materias.findByIdAndUpdate({_id:idMateria}, {$pullAll:{inscritos:[{_id:idAlumno}]}})
-        const EliminarMateriaInscrita = await Usuarios.findByIdAndUpdate({_id:idAlumno}, {$pullAll:{materia:idMateria}})
+        const EliminarUsuarioInscrito = await Materias.findByIdAndUpdate({_id:idMateria}, {$pullAll:{inscritos:[{_id:idAlumno}]}});
+        const EliminarMateriaInscrita = await Usuarios.findByIdAndUpdate({_id:idAlumno}, {$unset:{materia:idMateria}});
 
         return resp.status(200).json({
             ok:true,

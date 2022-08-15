@@ -41,7 +41,7 @@ router.delete('/eliminar-inscrito/:idMateria/:idAlumno',
             validarJWT, 
             eliminarInscrito)
 
-router.put('/alumno/:alumnoId/:materiaId', 
+router.put('/alumno/:materiaId/:alumnoId', 
             validarJWT,
             addAlumno);
 router.get('/materias-maestro/:idMaestro',
